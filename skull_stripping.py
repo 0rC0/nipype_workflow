@@ -3,7 +3,6 @@
 # connection example: main_wf.connect(datasource, 'subject_id', skull_stripping, 'conv_mgz.in_file')
 
 from nipype.pipeline.engine import Workflow, Node, MapNode
-from nipype import DataGrabber, DataSink
 import nipype.interfaces.fsl as fsl
 import nipype.interfaces.freesurfer as fs
 
