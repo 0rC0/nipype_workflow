@@ -28,5 +28,5 @@ class GZipTask(CommandLine):
 if __name__ == '__main__':
 
     zipper = GZipTask(input_file='an_existing_file')
-    print zipper.cmdline
+    print(zipper.cmdline)
     zipper.run()
