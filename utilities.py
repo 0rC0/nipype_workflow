@@ -9,6 +9,19 @@ def spm_tissues(in_list):
     '''
     return in_list[0][0], in_list[1][0], in_list[2][0]
 
+def count_voxels(in_file):
+    '''
+    count voxels for the a given nifti
+    from the benchmarks seems faster then fslstats -V
+    :param in_file:
+    :return: number of voxel, volume in mm^3 (voxel * pixdim)
+    '''
+    import nibabel as nib
+    import numpy as np
+    img = nib.load(in_file)
+    voxels = (img.get_fdata() != 0).sum()
+    volume = img.header['pixdim'][[1,2,3]].prod() * voxels
+    return voxels, volume
 
 # From https://github.com/spinoza-centre/spynoza/blob/master/spynoza/utils.py - MIT License
 def split_4D_to_3D(in_file):
