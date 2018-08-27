@@ -1,40 +1,47 @@
 def spm_tissues(in_list):
-    '''
+    """
     from a SPM NewSegment Tissues list, return GM, WM and CSf
 
     Example Node:
     spm_tissues_split = Node(
     Function(['in_list'], ['gm', 'wm', 'csf'], spm_tissues), name='spm_tissues_split')
-
-    '''
+    """
     return in_list[0][0], in_list[1][0], in_list[2][0]
 
+
 def count_voxels(in_file):
-    '''
+    """
     count voxels for the a given nifti
     from the benchmarks seems faster then fslstats -V
-    :param in_file:
+    :param in_file: str Absolute path to nifti-file (.nii, .nii.gz).
     :return: number of voxel, volume in mm^3 (voxel * pixdim)
-    '''
+    """
+
     import nibabel as nib
     import numpy as np
+
     img = nib.load(in_file)
     voxels = (img.get_fdata() != 0).sum()
     volume = img.header['pixdim'][[1,2,3]].prod() * voxels
+
     return voxels, volume
 
-# From https://github.com/spinoza-centre/spynoza/blob/master/spynoza/utils.py - MIT License
+
 def split_4D_to_3D(in_file):
-    """split_4D_to_3D splits a single 4D file into a list of nifti files.
+    """
+    split_4D_to_3D splits a single 4D file into a list of nifti files.
     Because it splits the file at once, it's faster than fsl.ExtractROI
     Parameters
-    ----------
-    in_file : str
-        Absolute path to nifti-file.
-    Returns
-    -------
-    out_files : list
-        List of absolute paths to nifti-files.    """
+    Ref: From https://github.com/spinoza-centre/spynoza/blob/master/spynoza/utils.py - MIT License
+
+    Example Node:
+    Split_4D_to_3D = Node(Function(function=split_4D_to_3D, input_names=['in_file'],
+output_names=['out_files'])Split_4D_to_3D = Function(function=split_4D_to_3D, input_names=['in_file'],
+output_names=['out_files']), name = 'Split_4D_to_3D')
+
+    :param in_file : str Absolute path to nifti-file (.nii, .nii.gz).
+    :return: out_files : list List of absolute paths to nifti-files.
+    """
 
     import nibabel as nib
     import os
@@ -57,7 +64,3 @@ def split_4D_to_3D(in_file):
         out_files.append(opfn)
 
     return out_files
-
-
-Split_4D_to_3D = Function(function=split_4D_to_3D, input_names=['in_file'],
-output_names=['out_files'])
